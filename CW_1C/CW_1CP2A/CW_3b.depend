@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1519903587 source:c:\users\user\desktop\cam\cw_3b\gq1_b.cpp
+	<cmath>
+	<iostream>
+
+1519924977 source:c:\users\user\desktop\cam\cw_3b\driver.cpp
+	<iostream>
+	<iomanip>
+	<cmath>
+
+1519903669 source:c:\users\user\desktop\cam\cw_3b\gq3_b.cpp
+	<cmath>
+	<cassert>
+
+1519918794 source:c:\users\user\desktop\cam\cw_3\function.cpp
+	<cmath>
+
