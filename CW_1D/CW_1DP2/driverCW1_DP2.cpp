@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <cassert>
-#include <iomanip>
 
 void funct(double* f, double* y, double alpha, double beta)
 {
@@ -9,7 +7,7 @@ f[0] = y[1];
 f[1] = -pow(alpha,2)*sin(y[0])-pow(beta,2)*y[1];
 }
 
-void Forward_Euler(int dim, double* yn, double* y_initial, double h, int n_max, double alpha, double beta)
+void BackwardEuler(int dim, double* yn, double* y_initial, double h, int n_max, double alpha, double beta)
 {
 for (int j = 0; j<dim; j++)
     {
@@ -37,24 +35,4 @@ while(i<=n_max)
         }
     i++;
     }
-}
-
-int main()
-{
-const double alpha = 2.0;
-const double beta = 1.0;
-const int dim = 2;
-const double pi = 3.14159265359;
-
-double* y;
-y = new double[dim];
-y[0] = pi/2.0;
-y[1] = 0.0;
-
-int n_max = 32;
-double h = 0.25;
-
-Forward_Euler(dim, y,y, h, n_max, alpha,beta);
-
-return 0;
 }

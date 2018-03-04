@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1519927955 source:c:\users\user\desktop\cam\problem2c\problem2c.cpp
-	<iostream>
-	<cmath>
-
-1519902911 source:c:\users\user\desktop\cam\problem2c\driver.cpp
-	<iostream>
-
