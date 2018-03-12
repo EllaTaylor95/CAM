@@ -42,7 +42,7 @@ while(i<=n_max)
 int main()
 {
 const double alpha = 2.0;
-const double beta = 1.0;
+const double beta = 0.0;
 const int dim = 2;
 const double pi = 3.14159265359;
 
@@ -52,7 +52,8 @@ y[0] = pi/2.0;
 y[1] = 0.0;
 
 int n_max = 32;
-double h = 0.25;
+//double T = 32;
+double h = 0.25; //T/double(n_max); //= T/n_max
 
 Forward_Euler(dim, y,y, h, n_max, alpha,beta);
 
