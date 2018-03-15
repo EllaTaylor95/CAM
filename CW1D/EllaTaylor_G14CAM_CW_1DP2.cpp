@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <fstream>
 
 void funct(double* f, double* y, double alpha, double beta)
 {
@@ -23,13 +24,13 @@ double F_norm = 10.0;
 double determinant;
 double Energy;
 
-std::cout<< "n"<<std::setw(7)<<"k"<<std::setw(12)<<"y1"<<std::setw(18)<<"y2"<<std::setw(25)<<"F_norm"<<std::endl;
+std::cout<< "n"<<std::setw(12)<<"y1"<<std::setw(18)<<"y2"<<std::setw(25)<<"F_norm"<<std::setw(32)<<"Energy"<<std::endl;
 
 for (int i = 1; i <= n_max; i++)
     {
     //Setting initial guess y_n+1(0) = y_n
 
-   std::cout<<std::endl<<i;//<<std::endl;
+   std::cout<<std::endl<<i;
 
     y_1[i] = y_1[i-1];
     y_2[i] = y_2[i-1];
@@ -42,13 +43,12 @@ for (int i = 1; i <= n_max; i++)
     F[0] = y_1[i] - y_1[i-1] - h*f[0];
     F[1] = y_2[i] - y_2[i-1] - h*f[1];
     F_norm = sqrt(pow(F[0],2) + pow(F[1],2));
-    //std::cout<<"F[1] = "<<F[1]<<"\n";
 
     while (F_norm >= TOL)
         {
         F_norm = 0;
 
-     //   std::cout<<std::setw(7)<<counter;
+        //std::cout<<std::setw(7)<<counter;
         counter++;
 
         // update y1 and y2
@@ -58,27 +58,29 @@ for (int i = 1; i <= n_max; i++)
         determinant = (1.0 + pow(h,2)*pow(alpha,2)*cos(y_1[i]));
 
         y_1[i] +=  (-1.0/determinant) * (F[0] + h*F[1]);
-    //   std::cout<<std::setw(12)<<y_1[i];
+       //std::cout<<std::setw(12)<<y_1[i];
         y_2[i] += (-1.0/determinant) * ( (-h*pow(alpha,2)*cos(y_1[i])*F[0]) + F[1]);
-    //    std::cout<<std::setw(18)<<y_2[i];
+        //std::cout<<std::setw(18)<<y_2[i];
 
         // calculate norm for updated y and y2 values
         u[0] = y_1[i];
         u[1] = y_2[i];
         funct(f,u,alpha,beta);
         F[0] = y_1[i] - y_1[i-1] - h*f[0];
-        //std::cout<<"F[0] = "<<F[0]<<"\n";
         F[1] = y_2[i] - y_2[i-1] - h*f[1];
-        //std::cout<<"F[1] = "<<F[1]<<"\n";
         F_norm = sqrt(pow(F[0],2) + pow(F[1],2));
-        //y_1[i]<<"  " << y_2[i] << "\n";
 
-      //  std::cout<<std::setw(25)<<F_norm<<std::endl;
+        //std::cout<<std::setw(25)<<F_norm<<std::endl;
         }
         counter=0;
 
         Energy = 0.5*pow(y_2[i],2)+pow(alpha,2)*(1-cos(y_1[i]));
-        std::cout<<std::setw(25)<<Energy<<std::endl;
+       // std::cout<<"Energy = "<<Energy<<std::endl;
+
+       std::cout<<std::setw(14)<<y_1[i];
+       std::cout<<std::setw(18)<<y_2[i];
+       std::cout<<std::setw(25)<<F_norm;
+       std::cout<<std::setw(32)<<Energy<<std::endl;
 
     }
 delete[] f;
@@ -91,9 +93,9 @@ double alpha = 2.0;
 double beta = 0.0;
 double pi = 3.14159265359;
 
-double T = 8.0;
+//double T = 8.0;
 int n_max = 32;
-double h = T/(double)(n_max);
+double h = 0.25; //0.9201; //T/(double)(n_max); //converges here
 
 double* y_1;
 double* y_2;
