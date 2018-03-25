@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1517920948 source:c:\users\user\desktop\cam\cw_1\cw_1a.cpp
+	<iostream>
+
+1518446006 source:c:\users\user\desktop\cam\cw_1\cw_1.cpp
+	<iostream>
+	<ctime>
+
