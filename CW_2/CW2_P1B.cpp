@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 
 void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, double* upper, double* f)
     {
@@ -26,7 +27,15 @@ void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, do
 int main()
 {
 //m x m is size of matrix A
-int m = 20;
+//int m = 20;
+int m;
+
+std::cout<<"m"<<std::setw(7)<<"h"<<std::setw(15)<<"E_2norm"<<std::endl;
+
+for (int i = 0; i<9; i++)
+    {
+    m = pow(2,i);
+
 double h = 1/(double)(m);
 double pi = 3.14159265359;
 
@@ -77,19 +86,36 @@ for(int i = m-1; i>0; i--)
     }
 U[0] = 0;
 
-for(int i = 0; i<m; i++)
-    {
-    std::cout<<"U["<<i<<"] = "<<U[i]<<"\n";
-    }
-std::cout<<"U["<<m<<"] = "<<U_last<<"\n"<<"U["<<m+1<<"] = "<<1<<"\n";
+//Define error as ||E||2 = sqrt(h*sum(|Ej^2|)) Ej = u(xj) - Uj
 
+double Ei, E_2norm = 0;
+
+for(int i =0; i<m; i++)
+    {
+    Ei = i*h - sin(pi*i*h) - U[i];
+    E_2norm = E_2norm + pow(Ei,2);
+    }
+E_2norm = sqrt(h*E_2norm);
+
+std::cout<<m<<std::setw(7)<<h<<std::setw(15)<<E_2norm<<std::endl;
 
 delete[] lower;
 delete[] upper;
 delete[] diag;
 delete[] f;
 delete[] U;
+    }
+
+//std::cout<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::endl;
+//
+//for(int i = 0; i<m; i++)
+//    {
+//    std::cout<<std::setw(1)<<i<<std::setw(15)<<U[i]<<std::endl;
+//    }
+//std::cout<<std::setw(1)<<m<<std::setw(15)<<U_last<<std::endl<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl;
+
+
+
 
 return 0;
 }
-
