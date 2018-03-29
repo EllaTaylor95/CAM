@@ -25,27 +25,22 @@ void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, do
     }
 
 
-void assign_vectors(int m, double* U, double* diag, double* upper, double* lower, double* U_prev)
+void assign_vectors(int m, double delta_t, double a, double* U, double* diag, double* upper, double* lower, double* U_prev)
     {
 double h = 1/(double)(m);
 double pi = 3.14159265359;
-double a = pow(pi,-2);
-double delta_t = 0.01;
 
 for (int i=0; i<m; i++)
     {
-    U[i] = sin(2.0*pi*h*(double)(i+1))+(double)(i+1)*h;
     diag[i] = 1.0+ 2.0*a*delta_t/pow(h,2);
     U_prev[i] = U[i];
-    U[i] = 0;
     }
-for (int i=0; i<m-2; i++)
+
+for (int i=0; i<m-1; i++)
     {
     lower[i] = -a*delta_t/pow(h,2);
     upper[i] = -a*delta_t/pow(h,2);
     }
-
-U_prev[m-1] = U_prev[m-1] + a*delta_t/pow(h,2);
 
 
     }
@@ -70,50 +65,58 @@ U_prev = new double[m];
 double* U;
 U = new double[m];
 
-for(int n = 0; n<4; n++)
+double h = 1/(double)(m);
+double pi = 3.14159265359;
+double a = pow(pi,-2);
+double delta_t = 0.25;
+
+for(int i =0; i<m; i++)
     {
-    n++;
-    assign_vectors(m,U,diag,upper,lower,U_prev);
-    tridiagonal_matrix_solver(m,U,lower,diag,upper,U_prev);
-
-    double U_last = U[m-1];
-
-    for(int i = m-1; i>0; i--)
-        {
-        U[i] = U[i-1];
-        }
-    U[0] = 0;
-
-    std::cout<<std::endl<<std::endl<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::endl;
-    for(int i = 0; i<m; i++)
-        {
-        std::cout<<std::setw(1)<<i<<std::setw(15)<<U[i]<<std::endl;
-        }
-    std::cout<<std::setw(1)<<m<<std::setw(15)<<U_last<<std::endl<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl<<std::endl;
-
+    U[i] = sin(2.0*pi*h*(double)(i+1))+(double)(i+1)*h;
     }
 
+assign_vectors(m,delta_t,a,U,diag,upper,lower,U_prev);
 
 
-//Define error as ||E||2 = sqrt(h*sum(|Ej^2|)) Ej = u(xj) - Uj
+U_prev[m-1] = U_prev[m-1] + a*delta_t/pow(h,2);
 
-//double Ei, E_2norm = 0;
-//
-//for(int i =0; i<m; i++)
-//    {
-//    Ei = i*h - sin(pi*i*h) - U[i];
-//    E_2norm = E_2norm + pow(Ei,2);
-//    }
-//E_2norm = sqrt(h*E_2norm);
-//
-//std::cout<<m<<std::setw(7)<<h<<std::setw(15)<<E_2norm<<std::endl;
+for(int n = 0; n<4; n++)
+    {
+    tridiagonal_matrix_solver(m,U,lower,diag,upper,U_prev);
+
+    std::cout<<std::endl<<std::endl<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::endl;
+    std::cout<<std::setw(1)<<0<<std::setw(15)<<0<<std::endl;
+    for(int i = 0; i<m; i++)
+        {
+        std::cout<<std::setw(1)<<i+1<<std::setw(15)<<U[i]<<std::endl;
+        }
+    std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl;
+
+    assign_vectors(m,delta_t,a,U,diag,upper,lower,U_prev);
+    }
+
+//Define error as max (e_N) = max error at final time
+
+double Ei, E_max = 0;
+
+for(int i =0; i<m; i++)
+    {
+    Ei = (double)(i+1)*h + exp(-4)*sin(pi*(double)(i+1)*h) - U[i];
+
+    if(E_max < Ei)
+        {
+        E_max = Ei;
+        }
+    }
+
+std::cout<<"E_max = "<<E_max<<std::endl;
 
 delete[] lower;
 delete[] upper;
 delete[] diag;
 delete[] U_prev;
 delete[] U;
-    //}
+
 return 0;
 }
 
