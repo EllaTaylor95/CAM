@@ -1,4 +1,4 @@
-#include <iostream>
+ #include <iostream>
 #include <cmath>
 #include <iomanip>
 
@@ -25,7 +25,7 @@ void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, do
     }
 
 
-void assign_vectors(int m, double delta_t, double a, double* U, double* diag, double* upper, double* lower, double* U_prev)
+void assign_vectors(int m, double delta_t, double a, double* g, double* U, double* diag, double* upper, double* lower, double* U_prev)
     {
 double h = 1/(double)(m);
 double pi = 3.14159265359;
@@ -33,7 +33,7 @@ double pi = 3.14159265359;
 for (int i=0; i<m; i++)
     {
     diag[i] = 1.0+ 2.0*a*delta_t/pow(h,2);
-    U_prev[i] = U[i];
+    U_prev[i] = U[i] + g[i];
     }
 
 for (int i=0; i<m-1; i++)
@@ -65,6 +65,9 @@ U_prev = new double[m];
 double* U;
 U = new double[m];
 
+double* g;
+g = new double[m];
+
 double h = 1/(double)(m);
 double pi = 3.14159265359;
 double a = pow(pi,-2);
@@ -72,13 +75,12 @@ double delta_t = 0.25;
 
 for(int i =0; i<m; i++)
     {
+    g[i] = 0;
     U[i] = sin(2.0*pi*h*(double)(i+1))+(double)(i+1)*h;
     }
+g[m-1] = a*delta_t/pow(h,2);
 
-assign_vectors(m,delta_t,a,U,diag,upper,lower,U_prev);
-
-
-U_prev[m-1] = U_prev[m-1] + a*delta_t/pow(h,2);
+assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
 
 for(int n = 0; n<4; n++)
     {
@@ -92,7 +94,7 @@ for(int n = 0; n<4; n++)
         }
     std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl;
 
-    assign_vectors(m,delta_t,a,U,diag,upper,lower,U_prev);
+    assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
     }
 
 //Define error as max (e_N) = max error at final time
