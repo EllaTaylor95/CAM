@@ -48,7 +48,8 @@ for (int i=0; i<m-1; i++)
 int main()
 {
 //m x m is size of matrix A
-int m = 10;
+int m = 10, num_time_steps = 5;
+double T = 5, h = 1/(double)(m), pi = 3.14159265359, a = pow(pi,-2), delta_t = T/num_time_steps;
 
 double* lower;
 lower = new double[m-1];
@@ -67,11 +68,6 @@ U = new double[m];
 
 double* g;
 g = new double[m];
-
-double h = 1/(double)(m);
-double pi = 3.14159265359;
-double a = pow(pi,-2);
-double delta_t = 0.25;
 
 for(int i =0; i<m; i++)
     {
@@ -118,6 +114,7 @@ delete[] upper;
 delete[] diag;
 delete[] U_prev;
 delete[] U;
+delete[] g;
 
 return 0;
 }
