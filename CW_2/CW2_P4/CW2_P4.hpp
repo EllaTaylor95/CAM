@@ -7,15 +7,35 @@ class ParabolicODE
 
 public:
     //Constructor
-    ParabolicODE(double alpha, double beta); //Put parameters for ODE in here
+    ParabolicODE(const int m);
+
+    //Destructor
+    ~ParabolicODE();
+
+    //Accessor
+    double* GetRHS() const;
+
+    //Calulating error
+    void CalculateErr(double* u, const double* u_actual) const;
+
+    //Returns solution for tridiagonal matrix eq
+    void TridiagonalMatrixSolver() const;
+
+    double normal_CFD(double x);
+
 
 private:
 
     //Cannot remember what goes on in this section here
 
     //Default constructor
-    ParabolicODE()
+    ParabolicODE();
 
+    double* mpRHS;
+
+    double mStepSize;
+
+    double mDeltaT;
 
 
 #endif
