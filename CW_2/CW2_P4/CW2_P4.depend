@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1522933414 source:c:\users\et137\onedrive\documents\computational applied mathematics\cam\cw_2\cw2_p4\cw2_p4_driver.cpp
+	"CW2_P4.hpp"
+	<iostream>
+
+1522946771 c:\users\et137\onedrive\documents\computational applied mathematics\cam\cw_2\cw2_p4\cw2_p4.hpp
+	<cmath>
+
