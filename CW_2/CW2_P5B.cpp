@@ -54,7 +54,7 @@ for (int i = 0; i<m; i++)
         }
     }
 
-u[0] = u[0] - K/gamma(1); //this is wrongggg
+u[0] = u[0] - K*gamma(1); //this is wrongggg
 
 int counter =0;
 
