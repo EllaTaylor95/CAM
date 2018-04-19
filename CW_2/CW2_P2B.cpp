@@ -69,6 +69,11 @@ U = new double[m];
 double* g;
 g = new double[m];
 
+double h = 1/(double)(m);
+double pi = 3.14159265359;
+double a = pow(pi,-2);
+double delta_t = 0.25;
+
 for(int i =0; i<m; i++)
     {
     g[i] = 0;
@@ -114,7 +119,6 @@ delete[] upper;
 delete[] diag;
 delete[] U_prev;
 delete[] U;
-delete[] g;
 
 return 0;
 }
