@@ -48,7 +48,8 @@ for (int i=0; i<m-1; i++)
 int main()
 {
 //m x m is size of matrix A
-int m = 10;
+int m = 20, num_time_steps = 5;
+double T = 5, h = 1/((double)(m)+1), pi = 3.14159265359, a = pow(pi,-2), delta_t = T/num_time_steps;
 
 double* lower;
 lower = new double[m-1];
@@ -68,11 +69,6 @@ U = new double[m];
 double* g;
 g = new double[m];
 
-double h = 1/(double)(m);
-double pi = 3.14159265359;
-double a = pow(pi,-2);
-double delta_t = 0.25;
-
 for(int i =0; i<m; i++)
     {
     g[i] = 0;
@@ -82,20 +78,21 @@ g[m-1] = a*delta_t/pow(h,2);
 
 assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
 
-for(int n = 0; n<4; n++)
+for(int n = 0; n<num_time_steps; n++)
     {
+
     tridiagonal_matrix_solver(m,U,lower,diag,upper,U_prev);
 
-    std::cout<<std::endl<<std::endl<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::endl;
-    std::cout<<std::setw(1)<<0<<std::setw(15)<<0<<std::endl;
+    std::cout<<std::endl<<std::endl<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::setw(25)<<"u(x_i)"<<std::endl;
+    std::cout<<std::setw(1)<<0<<std::setw(15)<<0<<std::setw(25)<<0<<std::endl;
     for(int i = 0; i<m; i++)
         {
-        std::cout<<std::setw(1)<<i+1<<std::setw(15)<<U[i]<<std::endl;
+        std::cout<<std::setw(1)<<i+1<<std::setw(15)<<U[i]<<std::setw(25)<<(double)(i+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(i+1)*h)<<std::endl;
         }
-    std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl;
+    std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::setw(25)<<(double)(m+1+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(m+1+1)*h)<<std::endl;
 
     assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
-    }
+
 
 //Define error as max (e_N) = max error at final time
 
@@ -103,21 +100,24 @@ double Ei, E_max = 0;
 
 for(int i =0; i<m; i++)
     {
-    Ei = (double)(i+1)*h + exp(-4)*sin(pi*(double)(i+1)*h) - U[i];
+    Ei = fabs((double)(i+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(i+1)*h) - U[i]);
 
     if(E_max < Ei)
         {
         E_max = Ei;
         }
     }
+    std::cout<<"E_max = "<<E_max<<std::endl;
+    }
 
-std::cout<<"E_max = "<<E_max<<std::endl;
+
 
 delete[] lower;
 delete[] upper;
 delete[] diag;
 delete[] U_prev;
 delete[] U;
+delete[] g;
 
 return 0;
 }

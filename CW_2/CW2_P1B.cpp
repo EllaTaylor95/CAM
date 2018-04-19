@@ -27,16 +27,18 @@ void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, do
 int main()
 {
 //m x m is size of matrix A
-//int m = 20;
 int m;
 
-std::cout<<"m"<<std::setw(7)<<"h"<<std::setw(15)<<"E_2norm"<<std::endl;
+//std::cout<<"m"<<std::setw(12)<<"h"<<std::setw(17)<<"E_2norm"<<std::endl;
+//
+//for (int i = 0; i<9; i++)
+//    {
 
-for (int i = 0; i<9; i++)
-    {
-    m = pow(2,i);
+int i = 8;
 
-double h = 1/(double)(m);
+m = pow(2,i);
+
+double h = 1/((double)(m)+1);
 double pi = 3.14159265359;
 
 double* lower;
@@ -64,7 +66,7 @@ f[0] = 0.0 ;
 lower[m-2] = -1.0/pow(h,2);
 diag[m-1] = 2.0/pow(h,2);
 //f(xm) + beta
-f[m-1] = -pow(pi,2)*sin(1.0*pi) + 1.0/pow(h,2);
+f[m-1] = -5/16 + 1.0/pow(h,2);
 U[m-1] = 0;
 
 for (int i=1; i<m-1; i++)
@@ -73,7 +75,7 @@ for (int i=1; i<m-1; i++)
     lower[i-1] = -1.0/pow(h,2);
     diag[i] = 2/pow(h,2);
     upper[i] = -1/pow(h,2);
-    f[i] = -pow(pi,2)*sin(pi*i*h);
+    f[i] = -(5/16)*pow(i*h,-3/4);
     }
 
 tridiagonal_matrix_solver(m,U,lower,diag,upper,f);
@@ -87,32 +89,34 @@ for(int i = m-1; i>0; i--)
 U[0] = 0;
 
 //Define error as ||E||2 = sqrt(h*sum(|Ej^2|)) Ej = u(xj) - Uj
+//
+//double Ei, E_2norm = 0;
+//
+//for(int i =0; i<m; i++)
+//    {
+//    Ei =  pow(i*h,5/4) - U[i];
+//    E_2norm = E_2norm + pow(Ei,2);
+//    }
+//E_2norm = sqrt(h*E_2norm);
+//
+//std::cout<<m<<std::setw(12)<<h<<std::setw(17)<<E_2norm<<std::endl;
 
-double Ei, E_2norm = 0;
+std::cout<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::setw(25)<<"u(x_i)"<<std::endl;
 
-for(int i =0; i<m; i++)
+for(int i = 0; i<m; i++)
     {
-    Ei = i*h - sin(pi*i*h) - U[i];
-    E_2norm = E_2norm + pow(Ei,2);
+    std::cout<<std::setw(1)<<i<<std::setw(15)<<U[i]<<std::setw(25)<<pow(i*h,5/4)<<std::endl;
     }
-E_2norm = sqrt(h*E_2norm);
+std::cout<<std::setw(1)<<m<<std::setw(15)<<U_last<<std::setw(25)<<pow(m*h,5/4)<<std::endl<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::setw(25)<<pow((m+1)*h,5/4)<<std::endl;
 
-std::cout<<m<<std::setw(7)<<h<<std::setw(15)<<E_2norm<<std::endl;
+
 
 delete[] lower;
 delete[] upper;
 delete[] diag;
 delete[] f;
 delete[] U;
-    }
-
-//std::cout<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::endl;
-//
-//for(int i = 0; i<m; i++)
-//    {
-//    std::cout<<std::setw(1)<<i<<std::setw(15)<<U[i]<<std::endl;
 //    }
-//std::cout<<std::setw(1)<<m<<std::setw(15)<<U_last<<std::endl<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::endl;
 
 
 
