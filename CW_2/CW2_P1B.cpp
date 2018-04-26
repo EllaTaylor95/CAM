@@ -29,12 +29,12 @@ int main()
 //m x m is size of matrix A
 int m;
 
-//std::cout<<"m"<<std::setw(12)<<"h"<<std::setw(17)<<"E_2norm"<<std::endl;
+std::cout<<"m"<<std::setw(12)<<"h"<<std::setw(17)<<"E_2norm"<<std::endl;
 //
 //for (int i = 0; i<9; i++)
 //    {
 
-int i = 8;
+int i = 4;
 
 m = pow(2,i);
 
@@ -89,17 +89,17 @@ for(int i = m-1; i>0; i--)
 U[0] = 0;
 
 //Define error as ||E||2 = sqrt(h*sum(|Ej^2|)) Ej = u(xj) - Uj
-//
-//double Ei, E_2norm = 0;
-//
-//for(int i =0; i<m; i++)
-//    {
-//    Ei =  pow(i*h,5/4) - U[i];
-//    E_2norm = E_2norm + pow(Ei,2);
-//    }
-//E_2norm = sqrt(h*E_2norm);
-//
-//std::cout<<m<<std::setw(12)<<h<<std::setw(17)<<E_2norm<<std::endl;
+
+double Ei, E_2norm = 0;
+
+for(int i =0; i<m; i++)
+    {
+    Ei =  pow(i*h,5/4) - U[i];
+    E_2norm = E_2norm + pow(Ei,2);
+    }
+E_2norm = sqrt(h*E_2norm);
+
+std::cout<<m<<std::setw(12)<<h<<std::setw(17)<<E_2norm<<std::endl;
 
 std::cout<<std::setw(1)<<"i"<<std::setw(15)<<"U"<<std::setw(25)<<"u(x_i)"<<std::endl;
 

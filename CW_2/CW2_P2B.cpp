@@ -25,10 +25,8 @@ void tridiagonal_matrix_solver(int n, double* U, double* lower, double* diag, do
     }
 
 
-void assign_vectors(int m, double delta_t, double a, double* g, double* U, double* diag, double* upper, double* lower, double* U_prev)
+void assign_vectors(int m, double h,double delta_t, double a, double* g, double* U, double* diag, double* upper, double* lower, double* U_prev)
     {
-double h = 1/(double)(m);
-double pi = 3.14159265359;
 
 for (int i=0; i<m; i++)
     {
@@ -48,8 +46,12 @@ for (int i=0; i<m-1; i++)
 int main()
 {
 //m x m is size of matrix A
-int m = 20, num_time_steps = 5;
-double T = 5, h = 1/((double)(m)+1), pi = 3.14159265359, a = pow(pi,-2), delta_t = T/num_time_steps;
+int num_time_steps = 10;
+double T = 1, pi = 3.14159265359, a = pow(pi,-2), delta_t = T/num_time_steps;
+double C = 10, h = sqrt(delta_t/C), m_ = 1/h -1 +0.5; //add 0.5 as number is truncated when converting from double to int
+int m = (int)(m_);
+
+std::cout<<"delta_t = "<<delta_t<<"\n h = "<<h<<"\n m = "<<m<<"\n";
 
 double* lower;
 lower = new double[m-1];
@@ -76,9 +78,9 @@ for(int i =0; i<m; i++)
     }
 g[m-1] = a*delta_t/pow(h,2);
 
-assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
+assign_vectors(m,h,delta_t,a,g,U,diag,upper,lower,U_prev);
 
-for(int n = 0; n<num_time_steps; n++)
+for(int n = 0; n<=num_time_steps; n++)
     {
 
     tridiagonal_matrix_solver(m,U,lower,diag,upper,U_prev);
@@ -89,9 +91,9 @@ for(int n = 0; n<num_time_steps; n++)
         {
         std::cout<<std::setw(1)<<i+1<<std::setw(15)<<U[i]<<std::setw(25)<<(double)(i+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(i+1)*h)<<std::endl;
         }
-    std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::setw(25)<<(double)(m+1+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(m+1+1)*h)<<std::endl;
+    std::cout<<std::setw(1)<<m+1<<std::setw(15)<<1<<std::setw(25)<<(double)(m+1)*h + exp(-4*n*delta_t)*sin(2*pi*(double)(m+1)*h)<<std::endl;
 
-    assign_vectors(m,delta_t,a,g,U,diag,upper,lower,U_prev);
+    assign_vectors(m,h,delta_t,a,g,U,diag,upper,lower,U_prev);
 
 
 //Define error as max (e_N) = max error at final time
